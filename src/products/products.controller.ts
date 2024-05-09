@@ -10,6 +10,7 @@ export class ProductsController {
 
   @MessagePattern('createProduct')
   create(@Payload() createProductDto: CreateProductDto) {
+    console.log('product microservice post PRODUCTS');
     return this.productsService.create(createProductDto);
   }
 
@@ -19,7 +20,12 @@ export class ProductsController {
   }
 
   @MessagePattern('findOneProduct')
-  findOne(@Payload() id: number) {
+  findOne(@Payload() payload: { id: string }) {
+    const id = parseInt(payload.id, 10);
+    if (isNaN(id)) {
+      throw new Error('Invalid ID provided');
+    }
+    console.log('find one product from product service', id);
     return this.productsService.findOne(id);
   }
 

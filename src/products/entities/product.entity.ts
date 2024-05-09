@@ -21,15 +21,27 @@ export class Product {
   @Column('text')
   description: string;
 
-  @OneToMany(() => Breadcrumb, (breadcrumb) => breadcrumb.product)
+  @Column({ type: 'text', nullable: true })
+  details?: string;
+
+  @Column('text', { array: true, nullable: true })
+  highlights: string[];
+
+  @OneToMany(() => Breadcrumb, (breadcrumb) => breadcrumb.product, {
+    cascade: true,
+  })
   breadcrumbs: Breadcrumb[];
 
-  @OneToMany(() => Image, (image) => image.product)
+  @OneToMany(() => Image, (image) => image.product, { cascade: true })
   images: Image[];
 
-  @OneToMany(() => Color, (color) => color.product)
+  @OneToMany(() => Color, (color) => color.product, {
+    cascade: ['insert', 'update'],
+  })
   colors: Color[];
 
-  @OneToMany(() => Size, (size) => size.product)
+  @OneToMany(() => Size, (size) => size.product, {
+    cascade: ['insert', 'update'],
+  })
   sizes: Size[];
 }
